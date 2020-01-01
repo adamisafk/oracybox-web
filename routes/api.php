@@ -21,3 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/users', function () {
     return \App\User::get();
 });
+
+Route::get('/completed/class/{classroom}', 'ApiController@showCompletedActivityByClassroom');
+Route::get('/completed/id/{activity}', 'ApiController@showResultsByCompletedActivityId');

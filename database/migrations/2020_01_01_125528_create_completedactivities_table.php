@@ -17,6 +17,7 @@ class CreateCompletedactivitiesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('activity_id');
             $table->unsignedBigInteger('pupil_id');
+            $table->unsignedBigInteger('classroom_id');
             $table->json('results');
             $table->string('media_path');
             $table->boolean('has_feedback');
@@ -24,6 +25,7 @@ class CreateCompletedactivitiesTable extends Migration
 
             $table->foreign('activity_id')->references('id')->on('activities');
             $table->foreign('pupil_id')->references('id')->on('users');
+            $table->foreign('classroom_id')->references('id')->on('classrooms');
         });
     }
 
