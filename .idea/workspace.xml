@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3390ea27-9515-4398-b14f-12eda793d049" name="Default Changelist" comment="" />
+    <list default="true" id="3390ea27-9515-4398-b14f-12eda793d049" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +17,9 @@
     <execution>
       <executable />
     </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -120,15 +128,26 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1VOryEgofjOulAxcuZIYO3ubNe9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views/post" />
+      <recent name="$PROJECT_DIR$/resources/views" />
+      <recent name="$PROJECT_DIR$/resources/views/layouts" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -159,7 +178,9 @@
       <option name="presentableId" value="Default" />
       <updated>1577135235844</updated>
       <workItem from="1577135247661" duration="1448000" />
-      <workItem from="1577196691183" duration="842000" />
+      <workItem from="1577196691183" duration="2061000" />
+      <workItem from="1577209650569" duration="13064000" />
+      <workItem from="1577647638877" duration="15591000" />
     </task>
     <servers />
   </component>
@@ -167,6 +188,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1007" y="167" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1577477239438">
+      <screen x="0" y="27" width="1600" height="873" />
+    </state>
+    <state x="1007" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1600.873@0.27.1600.873" timestamp="1577477239438" />
     <state width="1558" height="126" key="GridCell.Tab.0.bottom" timestamp="1577196748798">
       <screen x="0" y="27" width="1600" height="873" />
     </state>
@@ -183,5 +208,9 @@
       <screen x="0" y="27" width="1600" height="873" />
     </state>
     <state width="1558" height="126" key="GridCell.Tab.0.right/0.27.1600.873@0.27.1600.873" timestamp="1577196748797" />
+    <state x="463" y="210" key="run.anything.popup" timestamp="1577483670200">
+      <screen x="0" y="27" width="1600" height="873" />
+    </state>
+    <state x="463" y="210" key="run.anything.popup/0.27.1600.873@0.27.1600.873" timestamp="1577483670200" />
   </component>
 </project>

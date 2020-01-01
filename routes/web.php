@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+Route::get('/', 'BlogController@index');
+Route::get('post/{slug}', 'BlogController@show');
+Route::get('contact', function() {
+    return view('contact');
+});
+Route::get('{slug}', 'PagesController@show');

@@ -18,11 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Gets all users
-Route::get('/users/all', function () {
+Route::get('/users', function () {
     return \App\User::get();
-});
-
-//Gets all pupil users
-Route::get('/pupils/all', function () {
-    return \App\User::where('role_id', 3)->get();
 });
