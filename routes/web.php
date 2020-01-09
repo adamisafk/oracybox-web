@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });

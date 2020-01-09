@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3390ea27-9515-4398-b14f-12eda793d049" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/voyager.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/voyager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_12_31_175619_create_classrooms_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_12_31_175619_create_classrooms_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_01_01_125528_create_completedactivities_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_01_01_125528_create_completedactivities_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_01_01_132726_update_users_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +182,8 @@
       <workItem from="1577135247661" duration="1448000" />
       <workItem from="1577196691183" duration="2061000" />
       <workItem from="1577209650569" duration="13064000" />
-      <workItem from="1577647638877" duration="27496000" />
+      <workItem from="1577647638877" duration="40194000" />
+      <workItem from="1578413129165" duration="3333000" />
     </task>
     <servers />
   </component>
