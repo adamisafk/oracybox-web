@@ -17,10 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::post('completed-activities/create', 'CompletedActivityController@createActivity');
+    Route::get('completed-activities/list', 'CompletedActivityController@listActivities');
+});
+
+Route::post('user/register', 'UserController@registerUser');
+Route::post('user/login', 'UserController@userLogin');
+
 // Gets all users
 Route::get('/users', function () {
     return \App\User::get();
 });
-
-Route::get('/completed/class/{classroom}', 'ApiController@showCompletedActivityByClassroom');
-Route::get('/completed/id/{activity}', 'ApiController@showResultsByCompletedActivityId');
