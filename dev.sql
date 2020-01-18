@@ -11,11 +11,45 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Dumping data for table oracybox.activities: ~0 rows (approximately)
+
+-- Dumping database structure for oracybox
+CREATE DATABASE IF NOT EXISTS `oracybox` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+USE `oracybox`;
+
+-- Dumping structure for table oracybox.activities
+CREATE TABLE IF NOT EXISTS `activities` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `activities_topic_id_foreign` (`topic_id`),
+  CONSTRAINT `activities_topic_id_foreign` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.activities: ~1 rows (approximately)
 /*!40000 ALTER TABLE `activities` DISABLE KEYS */;
 INSERT INTO `activities` (`id`, `topic_id`, `name`, `description`, `type`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'Role of the muscles', 'Lorem..', 'Speech', '2020-01-01 21:44:06', '2020-01-01 21:44:06');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.categories
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `order` int(11) NOT NULL DEFAULT 1,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `categories_slug_unique` (`slug`),
+  KEY `categories_parent_id_foreign` (`parent_id`),
+  CONSTRAINT `categories_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.categories: ~1 rows (approximately)
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
@@ -23,20 +57,72 @@ INSERT INTO `categories` (`id`, `parent_id`, `order`, `name`, `slug`, `created_a
 	(1, 1, 1, '1', '1', '2020-01-01 21:16:52', '2020-01-01 21:20:25');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
--- Dumping data for table oracybox.classrooms: ~0 rows (approximately)
+-- Dumping structure for table oracybox.classrooms
+CREATE TABLE IF NOT EXISTS `classrooms` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `order` int(11) NOT NULL DEFAULT 1,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `classrooms_slug_unique` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.classrooms: ~1 rows (approximately)
 /*!40000 ALTER TABLE `classrooms` DISABLE KEYS */;
 INSERT INTO `classrooms` (`id`, `order`, `name`, `slug`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'Classroom A', 'classroom-a', '2020-01-01 21:16:37', '2020-01-01 21:16:37');
 /*!40000 ALTER TABLE `classrooms` ENABLE KEYS */;
 
--- Dumping data for table oracybox.completedactivities: ~1 rows (approximately)
+-- Dumping structure for table oracybox.completedactivities
+CREATE TABLE IF NOT EXISTS `completedactivities` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `activity_id` bigint(20) unsigned NOT NULL,
+  `pupil_id` bigint(20) unsigned NOT NULL,
+  `classroom_id` bigint(20) unsigned NOT NULL,
+  `results` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`results`)),
+  `media_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `has_feedback` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `completedactivities_activity_id_foreign` (`activity_id`),
+  KEY `completedactivities_pupil_id_foreign` (`pupil_id`),
+  KEY `completedactivities_classroom_id_foreign` (`classroom_id`),
+  CONSTRAINT `completedactivities_activity_id_foreign` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`),
+  CONSTRAINT `completedactivities_classroom_id_foreign` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`id`),
+  CONSTRAINT `completedactivities_pupil_id_foreign` FOREIGN KEY (`pupil_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.completedactivities: ~2 rows (approximately)
 /*!40000 ALTER TABLE `completedactivities` DISABLE KEYS */;
 INSERT INTO `completedactivities` (`id`, `activity_id`, `pupil_id`, `classroom_id`, `results`, `media_path`, `has_feedback`, `created_at`, `updated_at`) VALUES
 	(1, 1, 3, 1, '{\r\n	"score": 100\r\n}', 'path/to/file', 1, '2020-01-01 21:46:56', '2020-01-01 21:46:57'),
 	(10, 1, 5, 1, '{"score": 100}', 'test/path', 0, '2020-01-09 15:00:27', '2020-01-09 15:00:27');
 /*!40000 ALTER TABLE `completedactivities` ENABLE KEYS */;
 
--- Dumping data for table oracybox.data_rows: ~82 rows (approximately)
+-- Dumping structure for table oracybox.data_rows
+CREATE TABLE IF NOT EXISTS `data_rows` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `data_type_id` int(10) unsigned NOT NULL,
+  `field` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `required` tinyint(1) NOT NULL DEFAULT 0,
+  `browse` tinyint(1) NOT NULL DEFAULT 1,
+  `read` tinyint(1) NOT NULL DEFAULT 1,
+  `edit` tinyint(1) NOT NULL DEFAULT 1,
+  `add` tinyint(1) NOT NULL DEFAULT 1,
+  `delete` tinyint(1) NOT NULL DEFAULT 1,
+  `details` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `data_rows_data_type_id_foreign` (`data_type_id`),
+  CONSTRAINT `data_rows_data_type_id_foreign` FOREIGN KEY (`data_type_id`) REFERENCES `data_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.data_rows: ~84 rows (approximately)
 /*!40000 ALTER TABLE `data_rows` DISABLE KEYS */;
 INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, `required`, `browse`, `read`, `edit`, `add`, `delete`, `details`, `order`) VALUES
 	(1, 1, 'id', 'number', 'ID', 1, 0, 0, 0, 0, 0, '{}', 1),
@@ -125,7 +211,29 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 	(100, 1, 'user_hasmany_completedactivity_relationship', 'relationship', 'completedactivities', 0, 1, 1, 1, 1, 1, '{"model":"App\\\\Completedactivity","table":"completedactivities","type":"hasMany","column":"pupil_id","key":"activity_id","label":"id","pivot_table":"activities","pivot":"0","taggable":"0"}', 4);
 /*!40000 ALTER TABLE `data_rows` ENABLE KEYS */;
 
--- Dumping data for table oracybox.data_types: ~8 rows (approximately)
+-- Dumping structure for table oracybox.data_types
+CREATE TABLE IF NOT EXISTS `data_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name_singular` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name_plural` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `model_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `policy_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `controller` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `generate_permissions` tinyint(1) NOT NULL DEFAULT 0,
+  `server_side` tinyint(4) NOT NULL DEFAULT 0,
+  `details` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `data_types_name_unique` (`name`),
+  UNIQUE KEY `data_types_slug_unique` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.data_types: ~9 rows (approximately)
 /*!40000 ALTER TABLE `data_types` DISABLE KEYS */;
 INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `display_name_plural`, `icon`, `model_name`, `policy_name`, `controller`, `description`, `generate_permissions`, `server_side`, `details`, `created_at`, `updated_at`) VALUES
 	(1, 'users', 'users', 'User', 'Users', 'voyager-person', 'TCG\\Voyager\\Models\\User', 'TCG\\Voyager\\Policies\\UserPolicy', 'TCG\\Voyager\\Http\\Controllers\\VoyagerUserController', NULL, 1, 0, '{"order_column":"classroom_id","order_display_column":"classroom_id","order_direction":"desc","default_search_key":"classroom_id","scope":null}', '2019-12-23 21:10:41', '2020-01-02 20:28:43'),
@@ -139,16 +247,57 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 	(11, 'activities', 'activities', 'Activity', 'Activities', 'voyager-activity', 'App\\Activity', NULL, NULL, NULL, 1, 1, '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}', '2020-01-01 21:34:46', '2020-01-01 22:21:09');
 /*!40000 ALTER TABLE `data_types` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.failed_jobs
+CREATE TABLE IF NOT EXISTS `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.failed_jobs: ~0 rows (approximately)
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
--- Dumping data for table oracybox.menus: ~0 rows (approximately)
+-- Dumping structure for table oracybox.menus
+CREATE TABLE IF NOT EXISTS `menus` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `menus_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.menus: ~2 rows (approximately)
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
 INSERT INTO `menus` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(1, 'admin', '2019-12-23 21:10:41', '2019-12-23 21:10:41'),
 	(2, 'main', '2019-12-27 20:23:41', '2019-12-27 20:23:41');
 /*!40000 ALTER TABLE `menus` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.menu_items
+CREATE TABLE IF NOT EXISTS `menu_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `menu_id` int(10) unsigned DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `target` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '_self',
+  `icon_class` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `order` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `route` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameters` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `menu_items_menu_id_foreign` (`menu_id`),
+  CONSTRAINT `menu_items_menu_id_foreign` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.menu_items: ~23 rows (approximately)
 /*!40000 ALTER TABLE `menu_items` DISABLE KEYS */;
@@ -177,6 +326,14 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 	(26, 1, 'Site Tools', '', '_self', 'voyager-browser', '#000000', NULL, 6, '2020-01-01 22:23:23', '2020-01-01 22:28:27', NULL, ''),
 	(27, 1, 'OracyBox', '', '_self', 'voyager-chat', '#000000', NULL, 5, '2020-01-01 22:25:20', '2020-01-01 22:27:32', NULL, '');
 /*!40000 ALTER TABLE `menu_items` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.migrations
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.migrations: ~39 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -222,6 +379,21 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(154, '2016_06_01_000005_create_oauth_personal_access_clients_table', 5);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.oauth_access_tokens
+CREATE TABLE IF NOT EXISTS `oauth_access_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `client_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_access_tokens_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.oauth_access_tokens: ~2 rows (approximately)
 /*!40000 ALTER TABLE `oauth_access_tokens` DISABLE KEYS */;
 INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
@@ -229,9 +401,36 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 	('935408770e654b98f1eac5b0a55cc6e891312d2903570ab0767e416331cc3fbb735c7075e7d7650f', 5, 3, 'token', '[]', 0, '2020-01-09 14:11:51', '2020-01-09 14:11:51', '2021-01-09 14:11:51');
 /*!40000 ALTER TABLE `oauth_access_tokens` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.oauth_auth_codes
+CREATE TABLE IF NOT EXISTS `oauth_auth_codes` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `client_id` int(10) unsigned NOT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.oauth_auth_codes: ~0 rows (approximately)
 /*!40000 ALTER TABLE `oauth_auth_codes` DISABLE KEYS */;
 /*!40000 ALTER TABLE `oauth_auth_codes` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.oauth_clients
+CREATE TABLE IF NOT EXISTS `oauth_clients` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `personal_access_client` tinyint(1) NOT NULL,
+  `password_client` tinyint(1) NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_clients_user_id_index` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.oauth_clients: ~4 rows (approximately)
 /*!40000 ALTER TABLE `oauth_clients` DISABLE KEYS */;
@@ -242,6 +441,16 @@ INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `redirect`, `per
 	(4, NULL, 'OracyBox Password Grant Client', 'cQ0oq1zrKa4x1nQ8IRvoXJYrrZAqr43gw8JOjjsX', 'http://localhost', 0, 1, 0, '2020-01-09 11:11:21', '2020-01-09 11:11:21');
 /*!40000 ALTER TABLE `oauth_clients` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.oauth_personal_access_clients
+CREATE TABLE IF NOT EXISTS `oauth_personal_access_clients` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_personal_access_clients_client_id_index` (`client_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.oauth_personal_access_clients: ~2 rows (approximately)
 /*!40000 ALTER TABLE `oauth_personal_access_clients` DISABLE KEYS */;
 INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
@@ -249,21 +458,68 @@ INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `u
 	(2, 3, '2020-01-09 11:11:21', '2020-01-09 11:11:21');
 /*!40000 ALTER TABLE `oauth_personal_access_clients` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.oauth_refresh_tokens
+CREATE TABLE IF NOT EXISTS `oauth_refresh_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.oauth_refresh_tokens: ~0 rows (approximately)
 /*!40000 ALTER TABLE `oauth_refresh_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `oauth_refresh_tokens` ENABLE KEYS */;
 
--- Dumping data for table oracybox.pages: ~0 rows (approximately)
+-- Dumping structure for table oracybox.pages
+CREATE TABLE IF NOT EXISTS `pages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `author_id` int(11) NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `excerpt` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keywords` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('ACTIVE','INACTIVE') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'INACTIVE',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pages_slug_unique` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.pages: ~1 rows (approximately)
 /*!40000 ALTER TABLE `pages` DISABLE KEYS */;
 INSERT INTO `pages` (`id`, `author_id`, `title`, `excerpt`, `body`, `image`, `slug`, `meta_description`, `meta_keywords`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'About', 'What we do.', '<p>Lorem Ipsum...</p>', 'pages/about-bg.jpg', 'about', 'About page', 'about', 'INACTIVE', '2020-01-01 22:33:16', '2020-01-01 22:33:16');
 /*!40000 ALTER TABLE `pages` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.password_resets
+CREATE TABLE IF NOT EXISTS `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.password_resets: ~0 rows (approximately)
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
--- Dumping data for table oracybox.permissions: ~54 rows (approximately)
+-- Dumping structure for table oracybox.permissions
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `table_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `permissions_key_index` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.permissions: ~56 rows (approximately)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`) VALUES
 	(1, 'browse_admin', NULL, '2019-12-23 21:10:41', '2019-12-23 21:10:41'),
@@ -324,7 +580,18 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 	(66, 'delete_activities', 'activities', '2020-01-01 21:34:46', '2020-01-01 21:34:46');
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 
--- Dumping data for table oracybox.permission_role: ~76 rows (approximately)
+-- Dumping structure for table oracybox.permission_role
+CREATE TABLE IF NOT EXISTS `permission_role` (
+  `permission_id` bigint(20) unsigned NOT NULL,
+  `role_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`permission_id`,`role_id`),
+  KEY `permission_role_permission_id_index` (`permission_id`),
+  KEY `permission_role_role_id_index` (`role_id`),
+  CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.permission_role: ~77 rows (approximately)
 /*!40000 ALTER TABLE `permission_role` DISABLE KEYS */;
 INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 	(1, 1),
@@ -406,11 +673,43 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 	(66, 2);
 /*!40000 ALTER TABLE `permission_role` ENABLE KEYS */;
 
--- Dumping data for table oracybox.posts: ~0 rows (approximately)
+-- Dumping structure for table oracybox.posts
+CREATE TABLE IF NOT EXISTS `posts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `author_id` int(11) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `seo_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `excerpt` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_keywords` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('PUBLISHED','DRAFT','PENDING') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DRAFT',
+  `featured` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `posts_slug_unique` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.posts: ~1 rows (approximately)
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
 INSERT INTO `posts` (`id`, `author_id`, `category_id`, `title`, `seo_title`, `excerpt`, `body`, `image`, `slug`, `meta_description`, `meta_keywords`, `status`, `featured`, `created_at`, `updated_at`) VALUES
 	(1, 1, 1, 'Post 1', NULL, 'Lorem...', '<p>Lorem Ipsum...</p>', NULL, 'post-1', NULL, NULL, 'PUBLISHED', 1, '2020-01-01 21:17:22', '2020-01-01 21:17:22');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.roles
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `roles_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.roles: ~3 rows (approximately)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
@@ -419,6 +718,20 @@ INSERT INTO `roles` (`id`, `name`, `display_name`, `created_at`, `updated_at`) V
 	(2, 'teacher', 'Teacher', '2019-12-23 21:10:41', '2019-12-23 21:19:55'),
 	(3, 'pupil', 'Pupil', '2019-12-23 21:20:59', '2019-12-23 21:20:59');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.settings
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `details` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order` int(11) NOT NULL DEFAULT 1,
+  `group` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `settings_key_unique` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.settings: ~10 rows (approximately)
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
@@ -435,6 +748,16 @@ INSERT INTO `settings` (`id`, `key`, `display_name`, `value`, `details`, `type`,
 	(10, 'admin.google_analytics_client_id', 'Google Analytics Client ID (used for admin dashboard)', NULL, '', 'text', 1, 'Admin');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.subjects
+CREATE TABLE IF NOT EXISTS `subjects` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.subjects: ~6 rows (approximately)
 /*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
 INSERT INTO `subjects` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
@@ -446,11 +769,38 @@ INSERT INTO `subjects` (`id`, `name`, `description`, `created_at`, `updated_at`)
 	(6, 'Expressive Arts', 'Lorem...', '2020-01-01 21:43:20', '2020-01-01 21:43:21');
 /*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
 
--- Dumping data for table oracybox.topics: ~0 rows (approximately)
+-- Dumping structure for table oracybox.topics
+CREATE TABLE IF NOT EXISTS `topics` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `subject_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `topics_subject_id_foreign` (`subject_id`),
+  CONSTRAINT `topics_subject_id_foreign` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table oracybox.topics: ~1 rows (approximately)
 /*!40000 ALTER TABLE `topics` DISABLE KEYS */;
 INSERT INTO `topics` (`id`, `subject_id`, `name`, `description`, `created_at`, `updated_at`) VALUES
 	(1, 5, 'Physical Activity', 'Lorem...', '2020-01-01 21:43:09', '2020-01-01 21:43:10');
 /*!40000 ALTER TABLE `topics` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.translations
+CREATE TABLE IF NOT EXISTS `translations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `table_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `column_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foreign_key` int(10) unsigned NOT NULL,
+  `locale` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `translations_table_name_column_name_foreign_key_locale_unique` (`table_name`,`column_name`,`foreign_key`,`locale`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.translations: ~30 rows (approximately)
 /*!40000 ALTER TABLE `translations` DISABLE KEYS */;
@@ -487,6 +837,28 @@ INSERT INTO `translations` (`id`, `table_name`, `column_name`, `foreign_key`, `l
 	(30, 'menu_items', 'title', 10, 'pt', 'Configurações', '2019-12-23 21:10:47', '2019-12-23 21:10:47');
 /*!40000 ALTER TABLE `translations` ENABLE KEYS */;
 
+-- Dumping structure for table oracybox.users
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` bigint(20) unsigned DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'users/default.png',
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `settings` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `classroom_id` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  KEY `users_role_id_foreign` (`role_id`),
+  KEY `users_classroom_id_foreign` (`classroom_id`),
+  CONSTRAINT `users_classroom_id_foreign` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`id`),
+  CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table oracybox.users: ~5 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified_at`, `password`, `remember_token`, `settings`, `created_at`, `updated_at`, `classroom_id`) VALUES
@@ -496,6 +868,17 @@ INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified
 	(4, 3, 'Pupil 2', 'pupil2@pupil.com', 'users/default.png', NULL, '$2y$10$TO0gEaSdwALJbPzcGOX1BO1t.NDokktgO3XlZPhL1Y5O5ygs3Rr2y', NULL, '{"locale":"en"}', '2020-01-02 20:29:23', '2020-01-02 20:29:23', NULL),
 	(5, NULL, 'API Test', 'test@api.com', 'users/default.png', NULL, '$2y$10$mtF8jjmZI5Pt22CCX6BgCe.l0N8Rjl.jNoJ1c9Ds9W5K.KkaZVw6.', NULL, NULL, '2020-01-09 11:52:28', '2020-01-09 11:52:28', 1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+-- Dumping structure for table oracybox.user_roles
+CREATE TABLE IF NOT EXISTS `user_roles` (
+  `user_id` bigint(20) unsigned NOT NULL,
+  `role_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `user_roles_user_id_index` (`user_id`),
+  KEY `user_roles_role_id_index` (`role_id`),
+  CONSTRAINT `user_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table oracybox.user_roles: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
