@@ -324,7 +324,7 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 	(24, 1, 'Classrooms', '', '_self', 'voyager-study', NULL, 27, 1, '2020-01-01 21:16:21', '2020-01-01 22:25:26', 'voyager.classrooms.index', NULL),
 	(25, 1, 'Activities', '', '_self', 'voyager-activity', '#000000', 27, 2, '2020-01-01 21:34:46', '2020-01-01 22:27:52', 'voyager.activities.index', 'null'),
 	(26, 1, 'Site Tools', '', '_self', 'voyager-browser', '#000000', NULL, 6, '2020-01-01 22:23:23', '2020-01-01 22:28:27', NULL, ''),
-	(27, 1, 'OracyBox', '', '_self', 'voyager-chat', '#000000', NULL, 5, '2020-01-01 22:25:20', '2020-01-01 22:27:32', NULL, '');
+	(27, 1, 'oracybox', '', '_self', 'voyager-chat', '#000000', NULL, 5, '2020-01-01 22:25:20', '2020-01-01 22:27:32', NULL, '');
 /*!40000 ALTER TABLE `menu_items` ENABLE KEYS */;
 
 -- Dumping structure for table oracybox.migrations
@@ -435,10 +435,10 @@ CREATE TABLE IF NOT EXISTS `oauth_clients` (
 -- Dumping data for table oracybox.oauth_clients: ~4 rows (approximately)
 /*!40000 ALTER TABLE `oauth_clients` DISABLE KEYS */;
 INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `redirect`, `personal_access_client`, `password_client`, `revoked`, `created_at`, `updated_at`) VALUES
-	(1, NULL, 'OracyBox Personal Access Client', 'fEPYCyA6GLk9gxIEir7dRRCiGjba3vQ21AH1B8ba', 'http://localhost', 1, 0, 0, '2020-01-09 10:45:55', '2020-01-09 10:45:55'),
-	(2, NULL, 'OracyBox Password Grant Client', 'DR27LmfOVpai5cskJ53gSGFoVWhjsnH2G5XyTSFD', 'http://localhost', 0, 1, 0, '2020-01-09 10:45:55', '2020-01-09 10:45:55'),
-	(3, NULL, 'OracyBox Personal Access Client', 'XHRq9z5H45uQvCP0XE8GhP4HZbrwztfCJdnln8Ze', 'http://localhost', 1, 0, 0, '2020-01-09 11:11:21', '2020-01-09 11:11:21'),
-	(4, NULL, 'OracyBox Password Grant Client', 'cQ0oq1zrKa4x1nQ8IRvoXJYrrZAqr43gw8JOjjsX', 'http://localhost', 0, 1, 0, '2020-01-09 11:11:21', '2020-01-09 11:11:21');
+	(1, NULL, 'oracybox Personal Access Client', 'fEPYCyA6GLk9gxIEir7dRRCiGjba3vQ21AH1B8ba', 'http://localhost', 1, 0, 0, '2020-01-09 10:45:55', '2020-01-09 10:45:55'),
+	(2, NULL, 'oracybox Password Grant Client', 'DR27LmfOVpai5cskJ53gSGFoVWhjsnH2G5XyTSFD', 'http://localhost', 0, 1, 0, '2020-01-09 10:45:55', '2020-01-09 10:45:55'),
+	(3, NULL, 'oracybox Personal Access Client', 'XHRq9z5H45uQvCP0XE8GhP4HZbrwztfCJdnln8Ze', 'http://localhost', 1, 0, 0, '2020-01-09 11:11:21', '2020-01-09 11:11:21'),
+	(4, NULL, 'oracybox Password Grant Client', 'cQ0oq1zrKa4x1nQ8IRvoXJYrrZAqr43gw8JOjjsX', 'http://localhost', 0, 1, 0, '2020-01-09 11:11:21', '2020-01-09 11:11:21');
 /*!40000 ALTER TABLE `oauth_clients` ENABLE KEYS */;
 
 -- Dumping structure for table oracybox.oauth_personal_access_clients
@@ -736,12 +736,12 @@ CREATE TABLE IF NOT EXISTS `settings` (
 -- Dumping data for table oracybox.settings: ~10 rows (approximately)
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` (`id`, `key`, `display_name`, `value`, `details`, `type`, `order`, `group`) VALUES
-	(1, 'site.title', 'Site Title', 'OracyBox', '', 'text', 1, 'Site'),
+	(1, 'site.title', 'Site Title', 'oracybox', '', 'text', 1, 'Site'),
 	(2, 'site.description', 'Site Description', 'Learning Oracy has never been easier', '', 'text', 2, 'Site'),
 	(3, 'site.logo', 'Site Logo', '', '', 'image', 3, 'Site'),
 	(4, 'site.google_analytics_tracking_id', 'Google Analytics Tracking ID', NULL, '', 'text', 4, 'Site'),
 	(5, 'admin.bg_image', 'Admin Background Image', '', '', 'image', 5, 'Admin'),
-	(6, 'admin.title', 'Admin Title', 'OracyBox', '', 'text', 1, 'Admin'),
+	(6, 'admin.title', 'Admin Title', 'oracybox', '', 'text', 1, 'Admin'),
 	(7, 'admin.description', 'Admin Description', 'Control Panel', '', 'text', 2, 'Admin'),
 	(8, 'admin.loader', 'Admin Loader', '', '', 'image', 3, 'Admin'),
 	(9, 'admin.icon_image', 'Admin Icon Image', '', '', 'image', 4, 'Admin'),

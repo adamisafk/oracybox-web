@@ -19,4 +19,7 @@ Route::get('post/{slug}', 'BlogController@show');
 Route::get('contact', function() {
     return view('contact');
 });
+Route::get('/phpinfo', function() {
+    return view('phpinfo');
+});
 Route::get('{slug}', 'PagesController@show');
