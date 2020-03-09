@@ -13,10 +13,7 @@ class CurriculumController extends Controller
 {
     public function getSubjects() {
         $subjects = Subject::all();
-        return response()->json([
-            "success" => true,
-            "data" => $subjects
-        ]);
+        return response()->json($subjects);
     }
 
 
@@ -33,10 +30,7 @@ class CurriculumController extends Controller
             return back()->withErrors($validator->errors());
         } else {
             $topics = Topic::where('subject_id', $request->subject_id)->get();
-            return response()->json([
-                "success" => true,
-                "data" => $topics
-            ]);
+            return response()->json($topics);
         }
     }
 
@@ -54,10 +48,7 @@ class CurriculumController extends Controller
             return back()->withErrors($validator->errors());
         } else {
             $activities = Activity::where('topic_id', $request->topic_id)->get();
-            return response()->json([
-                "success" => true,
-                "data" => $activities
-            ]);
+            return response()->json($activities);
         }
     }
 }
